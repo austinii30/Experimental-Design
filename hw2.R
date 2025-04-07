@@ -1,11 +1,14 @@
 ##################################################
 # Filename: hw2.R
-# Purpose : Experimental Design, HW2 6-1 (d)
+# Purpose : Experimental Design, HW2 6-1 (d) (e)
 # Author  : Potumas Liu
 # Date    : 2025/03/30
 ##################################################
 
 
+##################################################
+# 6-1 (d)
+##################################################
 # the fitted model
 estimate <- function (vec) {
     r <- 3; N <- r*8
@@ -111,6 +114,38 @@ bpP <- car::ncvTest(lm(dat~., data=dat))$p
 testRes <- c(ksP, adP, swP, llP, bpP)
 names(testRes) <- c("KS", "AD", "SW", "Li", "BP")
 write.csv(testRes, "6-1-(d)-testResults.csv")
+
+
+
+##################################################
+# 6-1 (e)
+##################################################
+# interaction plot between factor A and factor C
+rawDat <- dat[-5]
+colnames(rawDat) <- c("y", "A", "B", "C")
+print(rawDat)
+
+# interaction plot
+pdf("6-1(e).pdf")
+par(mar=c(4.5, 4.5, 1, 1))
+interaction.plot(
+    x.factor = rawDat$A,      
+    trace.factor = rawDat$C,     
+    response = rawDat$y,     
+    col = c("blue", "red"),             
+    las=1, lty = 1, lwd = 2, pch = 16,
+    main = "",
+    ylab = "Life (in hours)", xlab = "Cutting Speed (A)",
+    cex.lab=1.5, cex.axis=1.5,
+    legend=F, 
+    panel.first = {
+        grid(nx=NULL, ny=NULL, col="gray80", lty=1, lwd=1)
+    }
+)
+legend("topright", title="Cutting Angle (C)",
+       legend=c("-1", "1"), col=c("blue", "red"), lwd=2,
+       title.cex=1.5, cex=1.5, bg="white")
+dev.off()
 
 
 
